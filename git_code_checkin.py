@@ -74,66 +74,77 @@ def main():
         commit = str(out, encoding="utf_8").split(' ', 1)
         commit_hash, commit_message = tuple(commit)
 
+        #Parent Container for html
+        out_file.write("<div style=\"margin-bottom: 10px;\">")
+
         # Header
-        out_file.write("<div><div style=\"color: rgb(34, 34, 34);\"><h2 style=\"font-family: 'Lucida Grande', verdana, arial, helvetica, sans-serif; padding: 12px 20px; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(174, 204, 215); color: rgb(68, 68, 68); border-top-width: 1px; border-top-style: solid; border-top-color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; letter-spacing: -1px; background-image: url(https://ci5.googleusercontent.com/proxy/uePTVeN_JgVYsynEuyhDhbtB0mD6pTiFux95naGYnCiLzO_SBt6a9vE8hEb0LMrlNECS1JSVZeGt9mZ5ERQSUV8Br9Z9sOisA5P1AQ0hHkT3ze3ZPNEfnyjoZKFuRuEy-21EDuAPoa8=s0-d-e1-ft#https://deermine.deerwalk.com/themes/deerwalk-blue/images/smooth-gradient-blue.jpg); background-color: rgb(234, 242, 245);\">{}</h2></div></div>".format(commit_message.strip('\n')))
-        out_file.write("<div><br></div>")
+        out_file.write("<h2 style=\"text-align:left;color:#f2f2f2;font-weight:200;line-height:1.5;text-transform:uppercase;position:relative;font-size:18px;padding:15px;margin-bottom:0;background-color:#303F9F;\">{}</h2>".format(commit_message.strip('\n')))
+
+        #Initalizing check-in body
+        out_file.write("<div style=\"padding:10px;background:#e5e5e5;box-sizing:border-box;border-top:0 solid #d8d8d8;border-right:1px solid #d8d8d8;border-bottom:2px solid #d8d8d8;border-left:1px solid #d8d8d8;font:Roboto,arial,sans-serif\">")
 
         # Project
         out_file.write("<div><b>Project:</b>&nbsp;{}</div>".format(project))
-        out_file.write("<div><br></div>")
+        out_file.write("<br/>")
 
         # Task
         out_file.write("<div><b>Task:</b>&nbsp;{}</div>".format(commit_message.split(':')[0].strip('\n')))
-        out_file.write("<div><br></div>")
+        out_file.write("<br/>")
 
         # Code/Unit Test Reviewed By
         out_file.write("<div><b>Code/Unit Test Reviewed By:</b>&nbsp;{}</div>".format(reviewed_by))
-        out_file.write("<div><br></div>")
+        out_file.write("<br/>")
 
         # QAT By
         out_file.write("<div><b>QAT By:</b>&nbsp;{}</div>".format(qat_by))
-        out_file.write("<div><br></div>")
+        out_file.write("<br/>")
 
         # Summary
         out_file.write("<div><b>Summary:</b>&nbsp;{}</div>".format(summary))
-        out_file.write("<div><br></div>")
+        out_file.write("<br/>")
 
         # Impacts
         out_file.write("<div><b>Impacts:</b>&nbsp;{}</div>".format(impacts))
-        out_file.write("<div><br></div>")
+        out_file.write("<br/>")
 
         # Notes
         out_file.write("<div><b>Notes:</b>&nbsp;{}</div>".format(notes))
-        out_file.write("<div><br></div>")
+        out_file.write("<br/>")
 
         # Git Branch
         out_file.write("<div><b>Git Branch:</b>&nbsp;{}</div>".format(branches))
-        out_file.write("<div><br></div>")
+        out_file.write("<br/>")
 
         # Commit Hash
         out_file.write("<div><b>Commit Hash:</b>&nbsp;{}</div>".format(commit_hash))
-        out_file.write("<div><br></div>")
+        out_file.write("<br/>")
 
         for header, file_list in changed_files_dict.items():
             if len(file_list) != 0:
-                out_file.write("<div><b>{} Files:</b><div>".format(header))
+                out_file.write("<div><b>{} Files:</b></div>".format(header))
+                out_file.write("<ul>")
 
                 for file in file_list:
                     i = 0
-                    out_file.write("<div>")
+                    out_file.write("<li>")
                     for token in file.split('\t'):
                         if i == 0:
-                            out_file.write("#&nbsp;&nbsp;")
+                            out_file.write("")
                         elif i == 2:
                             out_file.write(" -> " + token)
                         else:
                             out_file.write(token)
 
                         i += 1
-                    out_file.write("</div>")
+                    out_file.write("</li>")
 
-                out_file.write("<div><br></div>")
+                out_file.write("</ul>")
 
+        #Closing check-in body
+        out_file.write("</div>")
+
+        #Closing parent container
+        out_file.write("</div>")
         out_file.write("Regards,")
 
     # Copy the generated HTML to clipboard
